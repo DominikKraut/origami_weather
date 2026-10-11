@@ -2,7 +2,7 @@
 
 # ◪ Origami Weather
 
-A flexible weather card.
+A weather card with finished layouts and a builder approach. Use it as is or change as much as you like, it should cover most use cases.
 
 <a href="https://github.com/hazymorning/origami_weather/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/hazymorning/origami_weather?label=Release&color=41BDF5&labelColor=1B1C20"></a>
 <a href="https://my.home-assistant.io/redirect/hacs_repository/?owner=hazymorning&repository=origami_weather&category=plugin"><img alt="HACS custom repository" src="https://img.shields.io/badge/HACS-Custom-41BDF5?labelColor=1B1C20"></a>
