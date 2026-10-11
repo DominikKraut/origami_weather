@@ -68,7 +68,7 @@ Origami Weather is not listed in the HACS store yet. You can still install it th
 
 ## Layouts
 
-Everything in these layouts is customizable — see [Building blocks](#building-blocks) for how that works.
+There are six layouts, each with a different use case and style. Everything in them is customizable (see [Building blocks](#building-blocks)), so you can combine layouts and effects or build your own from scratch. For example, you could make a weather card that shows real photos for each condition, or a round card with a sun-cycle ring.
 
 <img width="800" alt="Image" src="https://github.com/user-attachments/assets/79726a62-a2df-44dd-b0c7-549d7db99ad9" />
 
