@@ -114,9 +114,13 @@ for k in ["sun_enabled", "moon_enabled", "cloud_effects", "night_sky_effects", "
           "balloon_effects", "plane_effects", "background_mode", "background_threshold_entity",
           "background_thresholds"]:
     preset.pop(k, None)
+# Written out explicitly (all of them are on by default) so they are easy to find and switch off.
+effects = {"background_mode": "default", "sun_enabled": True, "moon_enabled": True, "sun_moon_x": "dynamic",
+           "sun_moon_size": "64px", "cloud_effects": True, "precipitation_effects": True,
+           "night_sky_effects": True, "bird_effects": True, "bird_density": 0.5, "plane_effects": True,
+           "plane_density": 0.5, "balloon_effects": True, "balloon_density": 0.5}
 origami = {"type": "custom:origami-weather", "weather_entity": WEATHER, "color_mode": "sun",
-           **preset, "sun_moon_x": "dynamic", "sun_moon_size": "64px", "bird_density": 0.5,
-           "plane_density": 0.5, "balloon_density": 0.5, "css": css}
+           **effects, **preset, "css": css}
 origami["grid_options"] = {"columns": "full", "rows": "auto"}
 
 # --- views ------------------------------------------------------------------

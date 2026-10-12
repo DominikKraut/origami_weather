@@ -28,6 +28,20 @@ views:
     - type: custom:origami-weather
       weather_entity: weather.home
       color_mode: sun
+      background_mode: default
+      sun_enabled: true
+      moon_enabled: true
+      sun_moon_x: dynamic
+      sun_moon_size: 64px
+      cloud_effects: true
+      precipitation_effects: true
+      night_sky_effects: true
+      bird_effects: true
+      bird_density: 0.5
+      plane_effects: true
+      plane_density: 0.5
+      balloon_effects: true
+      balloon_density: 0.5
       card_height: 260px
       card_padding: 20px
       button_containers:
@@ -200,11 +214,6 @@ views:
       grid_options:
         columns: full
         rows: auto
-      sun_moon_x: dynamic
-      sun_moon_size: 64px
-      bird_density: 0.5
-      plane_density: 0.5
-      balloon_density: 0.5
       css: '#card-root.scheme-dark .omy{fill:#18191b}#card-root.scheme-dark .ogl{display:none}#card-root:has(ha-icon[icon="mdi:home-lightbulb"]).scheme-dark .omy{fill:#ffc56e}#card-root:has(ha-icon[icon="mdi:home-lightbulb"]).scheme-dark .ogl{display:inline}#card-root:has(ha-icon[icon="mdi:home-lightbulb"]).scheme-light .omy{fill:#e9b872}'
     - type: custom:home-pulse-shortcuts-card
       columns: 4
