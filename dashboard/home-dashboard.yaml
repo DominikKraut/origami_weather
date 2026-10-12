@@ -5,10 +5,26 @@ views:
   path: home
   icon: mdi:home-outline
   type: sections
-  max_columns: 3
+  max_columns: 2
   sections:
   - type: grid
     cards:
+    - type: custom:home-pulse-card
+      title: '{greeting}, {name}'
+      sections:
+      - greeting
+      - status
+      - alerts
+      - nudges
+      persons:
+      - person.dominik
+      - person.lenicka
+      weather_entity: weather.home
+      alarm_entity: none
+      mode_entity: none
+      today: false
+      grid_options:
+        columns: full
     - type: custom:origami-weather
       weather_entity: weather.home
       color_mode: theme
@@ -240,11 +256,25 @@ views:
         columns: full
         rows: auto
       css: '#card-root.scheme-dark .omy{fill:#18191b}#card-root.scheme-dark .ogl{display:none}#card-root:has(ha-icon[icon="mdi:home-lightbulb"]).scheme-dark .omy{fill:#ffc56e}#card-root:has(ha-icon[icon="mdi:home-lightbulb"]).scheme-dark .ogl{display:inline}#card-root:has(ha-icon[icon="mdi:home-lightbulb"]).scheme-light .omy{fill:#e9b872}'
-    - type: weather-forecast
-      entity: weather.home
-      show_current: false
-      show_forecast: true
-      forecast_type: daily
+    - type: custom:home-pulse-shortcuts-card
+      columns: 4
+      shortcuts:
+      - name: Rooms
+        icon: mdi:floor-plan
+        navigation_path: rooms
+        badge: lights
+      - name: Vacuum
+        icon: mdi:robot-vacuum
+        navigation_path: vacuum
+        entity: vacuum.vysafac
+      - name: Media
+        icon: mdi:television-play
+        navigation_path: rooms
+        badge: media
+      - name: System
+        icon: mdi:cog-outline
+        navigation_path: system
+        badge: batteries
       grid_options:
         columns: full
     - type: markdown
@@ -281,171 +311,65 @@ views:
   - type: grid
     cards:
     - type: heading
-      heading: Who's home
+      heading: Rooms
       heading_style: title
-      icon: mdi:account-group-outline
-    - type: tile
-      entity: person.dominik
-      name: Dominik
-      grid_options:
-        columns: 6
-    - type: tile
-      entity: person.lenicka
-      name: Lenka
-      grid_options:
-        columns: 6
-    - type: tile
-      entity: binary_sensor.moes_door_senzor_luminance
-      name: Front door
-      icon: mdi:door
-      state_content:
-      - state
-      - last_changed
-      grid_options:
-        columns: 12
-  - type: grid
-    cards:
-    - type: heading
-      heading: Lights
-      heading_style: title
-      icon: mdi:lightbulb-group-outline
-      badges:
-      - type: entity
-        entity: sensor.count_all_lights
-        show_state: true
-        show_icon: true
-        icon: mdi:lightbulb-off-outline
+    - type: custom:area-pulse-card
+      area: living_room
+      name: Obývák
+      icon: mdi:sofa-outline
+      max_chips: 3
+      actions:
+      - preset: lights_toggle
+        name: Lights
+      - entity: media_player.jabko_tv
+        name: Apple TV
+        icon: mdi:apple
+      - entity: button.vysafac_kuchyne_chodba_obyva
+        name: Vacuum
+        icon: mdi:robot-vacuum
+      - preset: lights_off
         name: All off
-        show_name: true
-        tap_action:
-          action: perform-action
-          perform_action: light.turn_off
-          target:
-            entity_id: all
-          confirmation:
-            text: Turn off all lights?
-    - type: tile
-      entity: light.living_room_lampa_tretakt_smart_plug_1_obyvak
-      name: Lampa
-      icon: mdi:floor-lamp
-      tap_action:
-        action: toggle
-      hold_action:
-        action: more-info
-      vertical: false
-      grid_options:
-        columns: 6
-    - type: tile
-      entity: light.chodba_svetlo_chodba
-      name: Lampa 2
-      icon: mdi:floor-lamp-outline
-      tap_action:
-        action: toggle
-      hold_action:
-        action: more-info
-      vertical: false
-      grid_options:
-        columns: 6
-    - type: tile
-      entity: light.svetlo_obyvak_koule
-      name: Koule
-      icon: mdi:globe-light
-      tap_action:
-        action: toggle
-      hold_action:
-        action: more-info
-      vertical: false
-      grid_options:
-        columns: 6
-    - type: tile
-      entity: light.svetlo_loznice
-      name: Ložnice
-      icon: mdi:ceiling-light
-      tap_action:
-        action: toggle
-      hold_action:
-        action: more-info
-      vertical: false
-      grid_options:
-        columns: 6
-    - type: tile
-      entity: light.led_strip_lights
-      name: LED pásek
-      icon: mdi:led-strip-variant
-      tap_action:
-        action: toggle
-      hold_action:
-        action: more-info
-      vertical: false
-      grid_options:
-        columns: 6
-    - type: tile
-      entity: light.chodba_svetlo_chodba_2
-      name: Chodba
-      icon: mdi:ceiling-light-outline
-      tap_action:
-        action: toggle
-      hold_action:
-        action: more-info
-      vertical: false
-      grid_options:
-        columns: 6
-  - type: grid
-    cards:
-    - type: heading
-      heading: Vacuum
-      heading_style: title
-      icon: mdi:robot-vacuum
-    - type: tile
-      entity: vacuum.vysafac
-      name: Vysavač
-      state_content:
-      - state
-      - battery_level
-      features:
-      - type: vacuum-commands
-        commands:
-        - start_pause
-        - stop
-        - return_home
-      tap_action:
-        action: navigate
-        navigation_path: vacuum
-      grid_options:
-        columns: 12
-    - type: tile
-      entity: button.vysafac_kuchyne_chodba_obyva
-      name: Clean kitchen, hall & living
-      icon: mdi:broom
-      tap_action:
-        action: perform-action
-        perform_action: button.press
-        target:
-          entity_id: button.vysafac_kuchyne_chodba_obyva
-      state_content: name
-      grid_options:
-        columns: 12
-  - type: grid
-    cards:
-    - type: heading
-      heading: Media
-      heading_style: title
-      icon: mdi:television-play
-    - type: media-control
-      entity: media_player.jabko_tv
+        icon: mdi:power
       grid_options:
         columns: full
-    - type: tile
-      entity: media_player.homepod_obyvak
-      name: HomePod
+      main_light: light.svetlo_obyvak_koule
+      exclude_entities:
+      - light.smart_zasuvka_obyvak_1_socket
+      - switch.smart_zasuvka_obyvak_1_socket
+      - switch.ikea_of_sweden_tretakt_smart_plug
+      - switch.living_room_svetlo_chodba
+    - type: custom:area-pulse-card
+      area: bedroom
+      name: Ložnice
+      icon: mdi:bed-outline
+      max_chips: 3
+      actions:
+      - preset: lights_on
+        name: Lights on
+      - preset: lights_off
+        name: Lights off
       grid_options:
-        columns: 6
-    - type: tile
-      entity: media_player.hovena_tv
-      name: TV
-      icon: mdi:television
+        columns: full
+    - type: custom:area-pulse-card
+      area: chodba
+      name: Chodba
+      icon: mdi:door-open
+      max_chips: 3
+      actions:
+      - preset: lights_toggle
+        name: Light
       grid_options:
-        columns: 6
+        columns: full
+      sensor_classes:
+      - illuminance
+      show_inactive: true
+    - type: weather-forecast
+      entity: weather.home
+      show_current: false
+      show_forecast: true
+      forecast_type: daily
+      grid_options:
+        columns: full
 - title: Rooms
   path: rooms
   icon: mdi:floor-plan
