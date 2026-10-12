@@ -27,62 +27,7 @@ views:
         columns: full
     - type: custom:origami-weather
       weather_entity: weather.home
-      color_mode: theme
-      sun_enabled: false
-      moon_enabled: false
-      cloud_effects: false
-      night_sky_effects: false
-      bird_effects: false
-      balloon_effects: false
-      plane_effects: false
-      background_mode: color
-      background_threshold_entity: weather.home
-      background_thresholds:
-      - value: sunny
-        color: '#e7e2d9'
-        color_dark: '#24211d'
-      - value: clear-night
-        color: '#dbdce1'
-        color_dark: '#15181f'
-      - value: partlycloudy
-        color: '#e0deda'
-        color_dark: '#1c2023'
-      - value: cloudy
-        color: '#d3d4d6'
-        color_dark: '#222324'
-      - value: fog
-        color: '#e6e6e5'
-        color_dark: '#272829'
-      - value: windy
-        color: '#dadfdd'
-        color_dark: '#1c201e'
-      - value: windy-variant
-        color: '#d5dad9'
-        color_dark: '#1a1f1e'
-      - value: rainy
-        color: '#cdd2d6'
-        color_dark: '#181e22'
-      - value: pouring
-        color: '#c8cdd2'
-        color_dark: '#14191e'
-      - value: lightning
-        color: '#cfced3'
-        color_dark: '#1c1b21'
-      - value: lightning-rainy
-        color: '#cacacf'
-        color_dark: '#18171e'
-      - value: snowy
-        color: '#e6eaed'
-        color_dark: '#252b2e'
-      - value: snowy-rainy
-        color: '#d8dddf'
-        color_dark: '#1f2527'
-      - value: hail
-        color: '#d2d9da'
-        color_dark: '#1c2324'
-      - value: exceptional
-        color: '#ded8d2'
-        color_dark: '#27221f'
+      color_mode: sun
       card_height: 260px
       card_padding: 20px
       button_containers:
@@ -255,6 +200,11 @@ views:
       grid_options:
         columns: full
         rows: auto
+      sun_moon_x: dynamic
+      sun_moon_size: 64px
+      bird_density: 0.5
+      plane_density: 0.5
+      balloon_density: 0.5
       css: '#card-root.scheme-dark .omy{fill:#18191b}#card-root.scheme-dark .ogl{display:none}#card-root:has(ha-icon[icon="mdi:home-lightbulb"]).scheme-dark .omy{fill:#ffc56e}#card-root:has(ha-icon[icon="mdi:home-lightbulb"]).scheme-dark .ogl{display:inline}#card-root:has(ha-icon[icon="mdi:home-lightbulb"]).scheme-light .omy{fill:#e9b872}'
     - type: custom:home-pulse-shortcuts-card
       columns: 4

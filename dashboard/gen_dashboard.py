@@ -108,8 +108,15 @@ css = (
     f"{LIT}.scheme-light .omy{{fill:#e9b872}}"
 )
 
-origami = {"type": "custom:origami-weather", "weather_entity": WEATHER, "color_mode": "theme",
-           **preset, "css": css}
+# The Home preset switches the sky off; we want it back: animated sky that follows the real sun
+# (day, dusk, night with stars), clouds, rain/snow, sun and moon, birds, planes and balloons.
+for k in ["sun_enabled", "moon_enabled", "cloud_effects", "night_sky_effects", "bird_effects",
+          "balloon_effects", "plane_effects", "background_mode", "background_threshold_entity",
+          "background_thresholds"]:
+    preset.pop(k, None)
+origami = {"type": "custom:origami-weather", "weather_entity": WEATHER, "color_mode": "sun",
+           **preset, "sun_moon_x": "dynamic", "sun_moon_size": "64px", "bird_density": 0.5,
+           "plane_density": 0.5, "balloon_density": 0.5, "css": css}
 origami["grid_options"] = {"columns": "full", "rows": "auto"}
 
 # --- views ------------------------------------------------------------------
