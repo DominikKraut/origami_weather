@@ -128,47 +128,60 @@ warnings = {
     "grid_options": {"columns": "full"},
 }
 
+# Area IDs as HA created them from the area names; check with {{ areas() }} in Developer Tools > Template.
+AREA_LIVING, AREA_BED, AREA_HALL = "living_room", "bedroom", "chodba"
+ROOM_CLEAN = "button.vysafac_kuchyne_chodba_obyva"
+
+def area_card(area, name, icon, actions, **kw):
+    return {"type": "custom:area-pulse-card", "area": area, "name": name, "icon": icon,
+            "max_chips": 3, "actions": actions, "grid_options": {"columns": "full"}, **kw}
+
+home_pulse = {
+    "type": "custom:home-pulse-card",
+    "title": "{greeting}, {name}",
+    "sections": ["greeting", "status", "alerts", "nudges"],
+    "persons": ["person.dominik", "person.lenicka"],
+    "weather_entity": WEATHER,
+    "alarm_entity": "none",
+    "mode_entity": "none",
+    "today": False,
+    "grid_options": {"columns": "full"},
+}
+shortcuts = {
+    "type": "custom:home-pulse-shortcuts-card",
+    "columns": 4,
+    "shortcuts": [
+        {"name": "Rooms", "icon": "mdi:floor-plan", "navigation_path": "rooms", "badge": "lights"},
+        {"name": "Vacuum", "icon": "mdi:robot-vacuum", "navigation_path": "vacuum", "entity": VAC},
+        {"name": "Media", "icon": "mdi:television-play", "navigation_path": "rooms", "badge": "media"},
+        {"name": "System", "icon": "mdi:cog-outline", "navigation_path": "system", "badge": "batteries"},
+    ],
+    "grid_options": {"columns": "full"},
+}
+
 home = {
-    "title": "Home", "path": "home", "icon": "mdi:home-outline", "type": "sections", "max_columns": 3,
+    "title": "Home", "path": "home", "icon": "mdi:home-outline", "type": "sections", "max_columns": 2,
     "sections": [
+        {"type": "grid", "cards": [home_pulse, origami, shortcuts, warnings]},
         {"type": "grid", "cards": [
-            origami,
+            heading("Rooms", style="title"),
+            area_card(AREA_LIVING, "Obývák", "mdi:sofa-outline", [
+                {"preset": "lights_toggle", "name": "Lights"},
+                {"entity": "media_player.jabko_tv", "name": "Apple TV", "icon": "mdi:apple"},
+                {"entity": ROOM_CLEAN, "name": "Vacuum", "icon": "mdi:robot-vacuum"},
+                {"preset": "lights_off", "name": "All off", "icon": "mdi:power"},
+            ], main_light="light.svetlo_obyvak_koule", exclude_entities=["light.smart_zasuvka_obyvak_1_socket",
+                "switch.smart_zasuvka_obyvak_1_socket", "switch.ikea_of_sweden_tretakt_smart_plug",
+                "switch.living_room_svetlo_chodba"]),
+            area_card(AREA_BED, "Ložnice", "mdi:bed-outline", [
+                {"preset": "lights_on", "name": "Lights on"},
+                {"preset": "lights_off", "name": "Lights off"},
+            ]),
+            area_card(AREA_HALL, "Chodba", "mdi:door-open", [
+                {"preset": "lights_toggle", "name": "Light"},
+            ], sensor_classes=["illuminance"], show_inactive=True),
             {"type": "weather-forecast", "entity": WEATHER, "show_current": False, "show_forecast": True,
              "forecast_type": "daily", "grid_options": {"columns": "full"}},
-            warnings,
-        ]},
-        {"type": "grid", "cards": [
-            heading("Who's home", "mdi:account-group-outline"),
-            tile("person.dominik", "Dominik"),
-            tile("person.lenicka", "Lenka"),
-            tile(DOOR, "Front door", "mdi:door", cols=12,
-                 state_content=["state", "last_changed"]),
-        ]},
-        {"type": "grid", "cards": [
-            heading("Lights", "mdi:lightbulb-group-outline", badges=[{
-                "type": "entity", "entity": "sensor.count_all_lights", "show_state": True, "show_icon": True,
-                "icon": "mdi:lightbulb-off-outline", "name": "All off", "show_name": True,
-                "tap_action": {"action": "perform-action", "perform_action": "light.turn_off",
-                               "target": {"entity_id": "all"},
-                               "confirmation": {"text": "Turn off all lights?"}},
-            }]),
-            *[light_tile(*l) for l in LIGHTS],
-        ]},
-        {"type": "grid", "cards": [
-            heading("Vacuum", "mdi:robot-vacuum"),
-            tile(VAC, "Vysavač", cols=12, state_content=["state", "battery_level"],
-                 features=[{"type": "vacuum-commands", "commands": ["start_pause", "stop", "return_home"]}],
-                 tap_action={"action": "navigate", "navigation_path": "vacuum"}),
-            tile("button.vysafac_kuchyne_chodba_obyva", "Clean kitchen, hall & living", "mdi:broom", cols=12,
-                 tap_action={"action": "perform-action", "perform_action": "button.press",
-                             "target": {"entity_id": "button.vysafac_kuchyne_chodba_obyva"}},
-                 state_content="name"),
-        ]},
-        {"type": "grid", "cards": [
-            heading("Media", "mdi:television-play"),
-            {"type": "media-control", "entity": "media_player.jabko_tv", "grid_options": {"columns": "full"}},
-            tile("media_player.homepod_obyvak", "HomePod", cols=6),
-            tile("media_player.hovena_tv", "TV", "mdi:television", cols=6),
         ]},
     ],
 }
