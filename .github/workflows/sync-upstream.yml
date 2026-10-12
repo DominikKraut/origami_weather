@@ -1,0 +1,42 @@
+name: Sync upstream + apply my building
+
+on:
+  schedule:
+    - cron: "0 4 * * 1"   # every Monday 04:00 UTC
+  workflow_dispatch:
+  push:
+    paths:
+      - custom/home.svg
+      - scripts/apply_home.py
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Merge upstream (upstream wins on conflicts)
+        if: github.event_name != 'push'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git remote add upstream https://github.com/hazymorning/origami_weather.git
+          git fetch upstream main
+          git merge upstream/main -X theirs --no-edit || {
+            git checkout --theirs image-assets.js && git add image-assets.js && git commit --no-edit; }
+
+      - name: Re-apply custom building
+        run: python3 scripts/apply_home.py
+
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add image-assets.js
+          git diff --cached --quiet || git commit -m "chore: apply custom DEMO_HOME"
+          git push
